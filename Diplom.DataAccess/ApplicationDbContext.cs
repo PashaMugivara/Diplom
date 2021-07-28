@@ -1,4 +1,5 @@
-﻿using Diplom.Models;
+﻿using Diplom.DataAccess.Entities;
+using Diplom.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -17,5 +18,9 @@ namespace Diplom.DataAccess
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {        
         }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<RequestPosition> Positions { get; set; }
+        public DbSet<RequestType> Types { get; set; }
+        public DbSet<RequestState> States { get; set; }
     }
 }

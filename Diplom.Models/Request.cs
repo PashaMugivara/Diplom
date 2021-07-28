@@ -1,4 +1,5 @@
 ﻿using Diplom.DataAccess.Entities;
+using Diplom.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,7 @@ namespace Diplom.DataAccess.Entities
         [Key]
         public Guid Id { get; set; }
         public int Number { get; set; }
+        public ApplicationUser User { get; set; }
         public string Description { get; set; }
         public Guid PositionId { get; set; }
         public RequestPosition Position { get; set; }
