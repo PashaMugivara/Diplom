@@ -40,7 +40,7 @@ namespace Diplom
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.AddTicketService();
+            //services.AddrequestService();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

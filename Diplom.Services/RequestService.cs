@@ -1,12 +1,11 @@
 ﻿using Diplom.DataAccess;
-using Diplom.DataAccess.Entities;
 using Diplom.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DOIT.Services
+namespace Diplom.Services
 {
     public class RequestService : IRequestService
     {
@@ -15,20 +14,21 @@ namespace DOIT.Services
         {
             this.applicationDbContext = applicationDbContext;
         }
-        public RequestDto Create(string ticketName, string ticketDescription, Guid ticketStateId, Guid ticketTypeId, DateTime ticketDate)
+        public Request Create(ApplicationUser applicationUser, string requestDescription, Guid requestPositionId, Guid requestStateId, Guid requestTypeId, DateTime requestDate)
         {
             try
             {
-                var ticket = new Request();
-                ticket.Id = Guid.NewGuid();
-                ticket.Name = ticketName;
-                ticket.Description = ticketDescription;
-                ticket.StateId = GetState(ticketStateId).Id;
-                ticket.TypeId = GetType(ticketTypeId).Id;
-                ticket.Date = ticketDate;
-                applicationDbContext.Tickets.Add(ticket);
+                var request = new Request();
+                request.Id = Guid.NewGuid();
+                request.User = applicationUser;
+                request.Description = requestDescription;
+                request.PositionId = GetPosition(requestPositionId).Id;
+                request.StateId = GetState(requestStateId).Id;
+                request.TypeId = GetType(requestTypeId).Id;
+                request.Data = requestDate;
+                applicationDbContext.Requests.Add(request);
                 applicationDbContext.SaveChanges();
-                return Converter(ticket);
+                return request;
             }
             catch (Exception e)
             {
@@ -40,9 +40,9 @@ namespace DOIT.Services
         {
             try
             {
-                var ticket = applicationDbContext.Tickets.FirstOrDefault(p => p.Id == id);
-                if (ticket == null) throw new Exception("This ticket not found");
-                applicationDbContext.Tickets.Remove(ticket);
+                var request = applicationDbContext.Requests.FirstOrDefault(p => p.Id == id);
+                if (request == null) throw new Exception("This request not found");
+                applicationDbContext.Requests.Remove(request);
                 applicationDbContext.SaveChanges();
             }
             catch (Exception e)
@@ -51,13 +51,26 @@ namespace DOIT.Services
             }
         }
 
-        private StateTicketDto GetState(Guid id)
+        private RequestState GetState(Guid id)
         {
             try
             {
                 var state = applicationDbContext.States.FirstOrDefault(p => p.Id == id);//try-case
                 if (state == null) throw new Exception("State with this guid does not exist");
-                return new StateTicketDto() { Id = state.Id, Name = state.Name };
+                return state;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        private RequestPosition GetPosition(Guid id)
+        {
+            try
+            {
+                var position = applicationDbContext.Positions.FirstOrDefault(p => p.Id == id);
+                if (position == null) throw new Exception("State with this guid does not exist");
+                return position;
             }
             catch (Exception e)
             {
@@ -66,16 +79,15 @@ namespace DOIT.Services
 
         }
 
-        
 
 
-        private TicketTypeDto GetType(Guid id)
+        private RequestType GetType(Guid id)
         {
             try
             {
                 var type = applicationDbContext.Types.FirstOrDefault(p => p.Id == id);
                 if (type == null) throw new Exception("Type with this guid does not exist");
-                return new TicketTypeDto() { Id = type.Id, Name = type.Name };
+                return type;
             }
             catch (Exception e)
             {
@@ -85,13 +97,13 @@ namespace DOIT.Services
         }
 
 
-        public TicketDto Get(Guid id)
+        public Request Get(Guid id)
         {
             try
             {
-                var ticket = applicationDbContext.Tickets.FirstOrDefault(p => p.Id == id);
-                if (ticket == null) throw new Exception("This ticket not found");
-                return Converter(ticket);
+                var request = applicationDbContext.Requests.FirstOrDefault(p => p.Id == id);
+                if (request == null) throw new Exception("This request not found");
+                return request;
             }
             catch (Exception e)
             {
@@ -100,16 +112,11 @@ namespace DOIT.Services
           
         }
 
-        public IEnumerable<TicketDto> GetAll() {
+        public IEnumerable<Request> GetAll() {
             try
             {
-                var tickets = applicationDbContext.Tickets;
-                var dtos = new List<TicketDto>();
-                foreach (Ticket ticket in tickets)
-                {
-                    dtos.Add(Converter(ticket));
-                }
-                IEnumerable<TicketDto> dto = dtos;
+                var requests = applicationDbContext.Requests;
+                IEnumerable<Request> dto = requests;
                 return dto;
             }
             catch (Exception e)
@@ -121,26 +128,25 @@ namespace DOIT.Services
         
        
 
-        public TicketDto Update(Guid Id, string newName, string newDescription, Guid newStateId, Guid newTypeId, DateTime newDate)
+        public Request Update(Guid Id, string newDescription, Guid newStateId, Guid newTypeId, Guid newPositionId, DateTime newDate)
         {
 
             try
             {
-                var ticket = applicationDbContext.Tickets.FirstOrDefault(p => p.Id == Id);
-
-                if (newName != null)
-                    ticket.Name = newName;
+                var request = applicationDbContext.Requests.FirstOrDefault(p => p.Id == Id);
                 if (newDescription != null)
-                    ticket.Description = newDescription;
+                    request.Description = newDescription;
                 if (newStateId != Guid.Empty)
-                    ticket.StateId = GetState(newStateId).Id;
+                    request.StateId = GetState(newStateId).Id;
                 if (newStateId != Guid.Empty)
-                    ticket.TypeId = GetType(newTypeId).Id;
-                    ticket.Date = newDate;
+                    request.TypeId = GetType(newTypeId).Id;
+                if (newPositionId != Guid.Empty)
+                    request.TypeId = GetPosition(newPositionId).Id;
+                request.Data = newDate;
 
                 applicationDbContext.SaveChanges();
 
-                return Converter(ticket);
+                return request;
             }
             catch (Exception e)
             {
@@ -150,35 +156,12 @@ namespace DOIT.Services
            
         }
 
-        private TicketDto Converter(Ticket ticket)
-        {
-            try
-            {
-                var dto = new TicketDto();
-                dto.Id = ticket.Id;
-                dto.Name = ticket.Name;
-                dto.Description = ticket.Description;
-                dto.State = GetState(ticket.StateId);
-                dto.Type = GetType(ticket.TypeId);
-                dto.Date = ticket.Date;
-                return dto;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public IEnumerable<StateTicketDto> GetAllStates()
+        public IEnumerable<RequestState> GetAllStates()
         {
             try
             {
                 var states = applicationDbContext.States;
-                var dtos = new List<StateTicketDto>();
-                foreach (TicketState state in states)
-                {
-                    dtos.Add(new StateTicketDto() { Id = state.Id, Name = state.Name });
-                }
-                IEnumerable<StateTicketDto> dto = dtos;
+                IEnumerable<RequestState> dto = states;
                 return dto;
             }
             catch (Exception e)
@@ -186,23 +169,32 @@ namespace DOIT.Services
                 throw new Exception(e.Message);
             }
         }
-        public IEnumerable<TicketTypeDto> GetAllTypes()
+        public IEnumerable<RequestType> GetAllTypes()
         {
             try
             {
                 var types = applicationDbContext.Types;
-                var dtos = new List<TicketTypeDto>();
-                foreach (TicketType type in types)
-                {
-                    dtos.Add(new TicketTypeDto() { Id = type.Id, Name = type.Name });
-                }
-                IEnumerable<TicketTypeDto> dto = dtos;
+                IEnumerable<RequestType> dto = types;
                 return dto;
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
+        }
+        public IEnumerable<RequestPosition> GetAllPositions()
+        {
+            try
+            {
+                var positions = applicationDbContext.Positions;
+                IEnumerable<RequestPosition> dto = positions;
+                return dto;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
     }
 }

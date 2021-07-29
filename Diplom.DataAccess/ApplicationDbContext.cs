@@ -1,5 +1,4 @@
-﻿using Diplom.DataAccess.Entities;
-using Diplom.Models;
+﻿using Diplom.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Diplom.DataAccess.Entities
+namespace Diplom.Models
 {
     [Table("State", Schema = "dbo")]
     public class RequestState
