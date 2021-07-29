@@ -40,18 +40,20 @@ namespace DOIT.Controllers
             
         }
         [HttpPost]
-        public JsonResult Update([FromBody] UpdateRequestRequest updateTicket)
+        public JsonResult Update([FromBody] UpdateRequestRequest updateRequest)
         {
             try
             {
-                if(!Guid.TryParse(updateTicket.Id, out Guid ticket)) throw new Exception("The ticketId is not a Guid type");
-                var ticketDto = _requestService.Get(ticket);
-                if (string.IsNullOrWhiteSpace(updateTicket.NewDescription)) updateTicket.NewDescription = ticketDto.Description;
-                if (string.IsNullOrWhiteSpace(updateTicket.NewStateId)) updateTicket.NewStateId = ticketDto.State.Id.ToString();
-                if (!Guid.TryParse(updateTicket.NewStateId, out Guid newStateId)) throw new Exception("The state is not a Guid type");
-                if (string.IsNullOrWhiteSpace(updateTicket.NewTypeId)) updateTicket.NewTypeId = ticketDto.Type.Id.ToString();
-                if (!Guid.TryParse(updateTicket.NewTypeId, out Guid newTypeId)) throw new Exception("The type is not a Guid type");
-                return new JsonResult(TicketToUpdateResponse(_ticketService.Update(ticket, updateTicket.NewName, updateTicket.NewDescription, newStateId, newTypeId, DateTime.Now), ticketDto));
+                if(!Guid.TryParse(updateRequest.Id, out Guid requestId)) throw new Exception("The ticketId is not a Guid type");
+                var request = _requestService.Get(requestId);
+                if (string.IsNullOrWhiteSpace(updateRequest.NewDescription)) updateRequest.NewDescription = request.Description;
+                if (string.IsNullOrWhiteSpace(updateRequest.NewPositionId)) updateRequest.NewPositionId = request.Position.Id.ToString();
+                if (!Guid.TryParse(updateRequest.NewPositionId, out Guid newPositionId)) throw new Exception("The state is not a Guid type");
+                if (string.IsNullOrWhiteSpace(updateRequest.NewStateId)) updateRequest.NewStateId = request.State.Id.ToString();
+                if (!Guid.TryParse(updateRequest.NewStateId, out Guid newStateId)) throw new Exception("The state is not a Guid type");
+                if (string.IsNullOrWhiteSpace(updateRequest.NewTypeId)) updateRequest.NewTypeId = request.Type.Id.ToString();
+                if (!Guid.TryParse(updateRequest.NewTypeId, out Guid newTypeId)) throw new Exception("The type is not a Guid type");
+                return new JsonResult(RequestToUpdateResponse(_requestService.Update(requestId, updateRequest.NewDescription, newPositionId, newStateId, newTypeId, DateTime.Now), request));
             }
             catch (Exception ex)
             {
@@ -59,13 +61,13 @@ namespace DOIT.Controllers
             }
         }
         [HttpGet]
-        public JsonResult Get([FromBody] GetRequestRequest getTicket)
+        public JsonResult Get([FromBody] GetRequestRequest getRequest)
         {
             try
             {
-                if (!Guid.TryParse(getTicket.TicketId, out Guid ticket)) throw new Exception("The ticketId is not a Guid type");
-                var ticketDto = _ticketService.Get(ticket);
-                return new JsonResult(TicketToStandardResponse(ticketDto));
+                if (!Guid.TryParse(getRequest.RequestId, out Guid requestId)) throw new Exception("The requestId is not a Guid type");
+                var request = _requestService.Get(requestId);
+                return new JsonResult(request);
             }
             catch (Exception ex)
             {
@@ -73,14 +75,14 @@ namespace DOIT.Controllers
             }
         }
         [HttpDelete]
-        public JsonResult Delete([FromBody] GetTicketRequest getTicket)
+        public JsonResult Delete([FromBody] GetRequestRequest getRequest)
         {
             try
             {
-                if (!Guid.TryParse(getTicket.TicketId, out Guid ticket)) throw new Exception("The ticketId is not a Guid type");
-                var ticketDto = _ticketService.Get(ticket);
-                _ticketService.Delete(ticket);
-                return new JsonResult(TicketToStandardResponse(ticketDto));
+                if (!Guid.TryParse(getRequest.RequestId, out Guid requestId)) throw new Exception("The requestId is not a Guid type");
+                var request = _requestService.Get(requestId);
+                _requestService.Delete(requestId);
+                return new JsonResult(request);
             }
             catch (Exception ex)
             {
@@ -92,7 +94,19 @@ namespace DOIT.Controllers
         {
             try
             {
-                return new JsonResult(GetAllResponse(_ticketService.GetAll()));
+                return new JsonResult(GetAllResponse(_requestService.GetAll()));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
+        [HttpGet]
+        public JsonResult GetAllPositions()
+        {
+            try
+            {
+                return new JsonResult(_requestService.GetAllPositions());
             }
             catch (Exception ex)
             {
@@ -104,7 +118,7 @@ namespace DOIT.Controllers
         {
             try
             {
-                return new JsonResult(GetAllStateResponse(_ticketService.GetAllStates()));
+                return new JsonResult(_requestService.GetAllStates());
             }
             catch (Exception ex)
             {
@@ -116,7 +130,7 @@ namespace DOIT.Controllers
         {
             try
             {
-                return new JsonResult(GetAllTypeResponse(_ticketService.GetAllTypes()));
+                return new JsonResult(_requestService.GetAllTypes());
             }
             catch (Exception ex)
             {
@@ -135,38 +149,24 @@ namespace DOIT.Controllers
             createRequestResponse.Date = request.Data.ToString("dd.MM.yyyy");
             return createRequestResponse;
         }
-        private UpdateRequestResponse TicketToUpdateResponse(TicketDto newTicketDto, TicketDto oldTicketDto)
+        private UpdateRequestResponse RequestToUpdateResponse(Request newRequest, Request oldRequest)
         {
-            var updateTicketResponse = new UpdateRequestResponse();
-            updateTicketResponse.Id = newTicketDto.Id.ToString();
-            updateTicketResponse.NewName = newTicketDto.Name;
-            updateTicketResponse.NewDescription = newTicketDto.Description;
-            updateTicketResponse.NewState = newTicketDto.State.Name;
-            updateTicketResponse.NewType = newTicketDto.Type.Name;
-            updateTicketResponse.OldName = oldTicketDto.Name;
-            updateTicketResponse.OldDescription = oldTicketDto.Description;
-            updateTicketResponse.OldState = oldTicketDto.State.Name;
-            updateTicketResponse.OldType = oldTicketDto.Type.Name;
-            updateTicketResponse.Date = oldTicketDto.Date.ToString("dd.MM.yyyy");
-            return updateTicketResponse;
+            var updateRequestResponse = new UpdateRequestResponse();
+            updateRequestResponse.Id = newRequest.Id.ToString();
+            updateRequestResponse.NewPosition = newRequest.Position.Name;
+            updateRequestResponse.NewDescription = newRequest.Description;
+            updateRequestResponse.NewState = newRequest.State.Name;
+            updateRequestResponse.NewType = newRequest.Type.Name;
+            updateRequestResponse.OldPosition = oldRequest.Position.Name;
+            updateRequestResponse.OldDescription = oldRequest.Description;
+            updateRequestResponse.OldState = oldRequest.State.Name;
+            updateRequestResponse.OldType = oldRequest.Type.Name;
+            updateRequestResponse.Date = oldRequest.Data.ToString("dd.MM.yyyy");
+            return updateRequestResponse;
         }
-        private IEnumerable<CreateRequestResponse> GetAllResponse(IEnumerable<TicketDto> tickets)
+        private IEnumerable<CreateRequestResponse> GetAllResponse(IEnumerable<Request> requests)
         {
-            return tickets.Select(TicketToStandardResponse);
-        }
-        private IEnumerable<TicketState> GetAllStateResponse(IEnumerable<StateTicketDto> states)
-        {
-            foreach (var ir in states)
-            {
-                yield return new TicketState() { Id = ir.Id, Name = ir.Name };
-            }
-        }
-        private IEnumerable<TicketType> GetAllTypeResponse(IEnumerable<TicketTypeDto> types)
-        {
-            foreach (var ir in types)
-            {
-                yield return new TicketType() { Id = ir.Id, Name = ir.Name };
-            }
+            return requests.Select(RequestToStandardResponse);
         }
     }
 }
