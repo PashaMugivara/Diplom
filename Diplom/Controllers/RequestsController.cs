@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Diplom.Models;
 using Diplom.DataAccess;
 using Microsoft.Data.SqlClient;
-using Diplom.Request;
+using Diplom.Requestion;
 using Diplom.Response;
 using Diplom.Services;
 
-namespace DOIT.Controllers
+namespace Diplom.Controllers
 {
     public class RequestsController : Controller
     {
