@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Diplom.DataAccess\Diplom.DataAccess.csproj" />
+    <ProjectReference Include="..\Diplom.IoC\Diplom.IoC.csproj" />
+    <ProjectReference Include="..\Diplom.Models\Diplom.Models.csproj" />
+    <ProjectReference Include="..\Diplom.Services\Diplom.Services.csproj" />
+  </ItemGroup>
+
+</Project>

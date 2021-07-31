@@ -14,7 +14,7 @@ namespace Diplom.Services
         {
             this.applicationDbContext = applicationDbContext;
         }
-        public Request Create(ApplicationUser applicationUser, string requestDescription, Guid requestPositionId, Guid requestStateId, Guid requestTypeId, DateTime requestDate)
+        public Request Create(User applicationUser, string requestDescription, Guid requestPositionId, Guid requestStateId, Guid requestTypeId, DateTime requestDate)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Diplom.Services
         {
             try
             {
-                var state = applicationDbContext.States.FirstOrDefault(p => p.Id == id);//try-case
+                var state = applicationDbContext.RequestStates.FirstOrDefault(p => p.Id == id);//try-case
                 if (state == null) throw new Exception("State with this guid does not exist");
                 return state;
             }
@@ -68,7 +68,7 @@ namespace Diplom.Services
         {
             try
             {
-                var position = applicationDbContext.Positions.FirstOrDefault(p => p.Id == id);
+                var position = applicationDbContext.RequestPositions.FirstOrDefault(p => p.Id == id);
                 if (position == null) throw new Exception("State with this guid does not exist");
                 return position;
             }
@@ -85,7 +85,7 @@ namespace Diplom.Services
         {
             try
             {
-                var type = applicationDbContext.Types.FirstOrDefault(p => p.Id == id);
+                var type = applicationDbContext.RequestTypes.FirstOrDefault(p => p.Id == id);
                 if (type == null) throw new Exception("Type with this guid does not exist");
                 return type;
             }
@@ -160,7 +160,7 @@ namespace Diplom.Services
         {
             try
             {
-                var states = applicationDbContext.States;
+                var states = applicationDbContext.RequestStates;
                 IEnumerable<RequestState> dto = states;
                 return dto;
             }
@@ -173,7 +173,7 @@ namespace Diplom.Services
         {
             try
             {
-                var types = applicationDbContext.Types;
+                var types = applicationDbContext.RequestTypes;
                 IEnumerable<RequestType> dto = types;
                 return dto;
             }
@@ -186,7 +186,7 @@ namespace Diplom.Services
         {
             try
             {
-                var positions = applicationDbContext.Positions;
+                var positions = applicationDbContext.RequestPositions;
                 IEnumerable<RequestPosition> dto = positions;
                 return dto;
             }
