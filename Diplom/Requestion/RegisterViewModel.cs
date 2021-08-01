@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Diplom.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Diplom.Requestion
 {
@@ -7,6 +8,10 @@ namespace Diplom.Requestion
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Profession")]
+        public string ProfessionId { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

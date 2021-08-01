@@ -12,6 +12,8 @@ namespace Diplom.Services
         IEnumerable<User> GetAll(Guid profession);
         IEnumerable<UserState> GetAllStates();
         IEnumerable<UserProfession> GetAllProfession();
-
+        UserProfession GetProfession(Guid id);
+        UserState GetState(Guid id);
+        UserState GetState();
     }
 }
