@@ -22,5 +22,57 @@ namespace Diplom.DataAccess
         public DbSet<RequestPosition> RequestPositions { get; set; }
         public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<RequestState> RequestStates { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            base.OnModelCreating(modelBuilder);
+            //-------------------UserState----------------------------------
+            UserState before = new UserState() { Id = Guid.NewGuid(), Name = "Available" };
+            UserState progress = new UserState() { Id = Guid.NewGuid(), Name = "Busy" };
+            UserState after = new UserState() { Id = Guid.NewGuid(), Name = "Absent" };
+
+            modelBuilder.Entity<UserState>().HasData(
+                before, progress, after);
+            //--------------------------------------------------------------
+            //-------------------UserProfession----------------------------------
+            UserProfession p1 = new UserProfession() { Id = Guid.NewGuid(), Name = "Сleaning lady" };
+            UserProfession p2 = new UserProfession() { Id = Guid.NewGuid(), Name = "Plumber" };
+            UserProfession p3 = new UserProfession() { Id = Guid.NewGuid(), Name = "Engineer" };
+            UserProfession p4 = new UserProfession() { Id = Guid.NewGuid(), Name = "Stewardess" };
+            UserProfession p5 = new UserProfession() { Id = Guid.NewGuid(), Name = "Security" };
+            UserProfession p6 = new UserProfession() { Id = Guid.NewGuid(), Name = "Pilot" };
+            UserProfession p7 = new UserProfession() { Id = Guid.NewGuid(), Name = "Cashier" };
+            UserProfession p8 = new UserProfession() { Id = Guid.NewGuid(), Name = "Dispatcher" };
+            UserProfession p9 = new UserProfession() { Id = Guid.NewGuid(), Name = "Customs officer" };
+            UserProfession p10 = new UserProfession() { Id = Guid.NewGuid(), Name = "Policeman" };
+            UserProfession p11 = new UserProfession() { Id = Guid.NewGuid(), Name = "Loader" };
+            UserProfession p12 = new UserProfession() { Id = Guid.NewGuid(), Name = "Driver" };
+            UserProfession p13 = new UserProfession() { Id = Guid.NewGuid(), Name = "Mechanic" };
+            UserProfession p14 = new UserProfession() { Id = Guid.NewGuid(), Name = "Technician" };
+
+            modelBuilder.Entity<UserProfession>().HasData(
+                p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            //-------------------RequestState-------------------------------------------
+            RequestState rs1 = new RequestState() { Id = Guid.NewGuid(), Name = "New" };
+            RequestState rs2 = new RequestState() { Id = Guid.NewGuid(), Name = "In progress" };
+            RequestState rs3 = new RequestState() { Id = Guid.NewGuid(), Name = "Finished" };
+
+            modelBuilder.Entity<RequestState>().HasData(
+                rs1, rs2, rs3);
+            //--------------------------------------------------------------
+            //-------------------RequestState-------------------------------------------
+            RequestType rt1 = new RequestType() { Id = Guid.NewGuid(), Name = "Cleaning" };
+            RequestType rt2 = new RequestType() { Id = Guid.NewGuid(), Name = "Repair" };
+            RequestType rt3 = new RequestType() { Id = Guid.NewGuid(), Name = "System failure" };
+            RequestType rt4 = new RequestType() { Id = Guid.NewGuid(), Name = "Cargo transfer" };
+            RequestType rt5 = new RequestType() { Id = Guid.NewGuid(), Name = "Need an employee" };
+            RequestType rt6 = new RequestType() { Id = Guid.NewGuid(), Name = "Conflict" };
+            RequestType rt7 = new RequestType() { Id = Guid.NewGuid(), Name = "Other" };
+
+            modelBuilder.Entity<RequestType>().HasData(
+                rt1, rt2, rt3, rt4, rt5, rt6, rt7);
+            //--------------------------------------------------------------
+        }
     }
 }
