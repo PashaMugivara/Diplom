@@ -22,6 +22,8 @@ namespace Diplom.DataAccess
         public DbSet<RequestPosition> RequestPositions { get; set; }
         public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<RequestState> RequestStates { get; set; }
+        public DbSet<UserState> UserStates { get; set; }
+        public DbSet<UserProfession> UserProfessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
