@@ -39,7 +39,7 @@ namespace CustomIdentityApp.Controllers
                 {
                     // установка куки
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Request");
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace CustomIdentityApp.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Request");
                     }
                 }
                 else
@@ -91,7 +91,7 @@ namespace CustomIdentityApp.Controllers
         {
             // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Request");
         }
         [HttpPost]
         public JsonResult GetAllProfession()
