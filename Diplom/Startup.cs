@@ -28,6 +28,7 @@ namespace Diplom
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRequestService, RequestService>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

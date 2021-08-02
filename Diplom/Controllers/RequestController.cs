@@ -9,19 +9,30 @@ using Microsoft.Data.SqlClient;
 using Diplom.Requestion;
 using Diplom.Response;
 using Diplom.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Diplom.Controllers
 {
-    public class RequestsController : Controller
+    public class RequestController : Controller
     {
         private readonly IRequestService _requestService;
 
-        public RequestsController(IRequestService requestService)
+        public RequestController(IRequestService requestService)
         {
             _requestService = requestService;
         }
+        public IActionResult Index()
+        {
+            return View(GetAll());
+        }
+        public IActionResult Create()
+        {
+            ViewBag.Types = new SelectList(_requestService.GetAllTypes(), "Id", "Name");
+            ViewBag.Positions = new SelectList(_requestService.GetAllPositions(), "Id", "Name");
+            return View();
+        }
         [HttpPost]
-        public JsonResult Create([FromBody] CreateRequestRequest createResponse)
+        public JsonResult Create(CreateRequestRequest createResponse)
         {
             try
             {
@@ -89,17 +100,10 @@ namespace Diplom.Controllers
                 return new JsonResult(ex.Message);
             }
         }
-        [HttpGet]
-        public JsonResult GetAll()
+        public IEnumerable<CreateRequestResponse> GetAll()
         {
-            try
-            {
-                return new JsonResult(GetAllResponse(_requestService.GetAll()));
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(ex.Message);
-            }
+                return GetAllResponse(_requestService.GetAll());
+
         }
         [HttpGet]
         public JsonResult GetAllPositions()

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Diplom.Response.CreateRequestResponse>
+@{
+    ViewBag.Title = "Все пользователи";
+}
+<a asp-action="Create">Добавить пользователя</a>
+<table class="table">
+    <tr><td>Отправитель</td><td>Место запроса</td><td>Тип помощи</td><td>Статус</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr><td>@item.User</td><td>@item.Position</td><td>@item.Type</td><td>@item.State</td></tr>
+    }
+</table>
