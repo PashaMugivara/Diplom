@@ -14,7 +14,23 @@
         <tr><td>Отправитель</td><td>Место запроса</td><td>Тип помощи</td><td>Статус</td></tr>
         @foreach (var item in Model)
         {
-            <tr><td>@item.User</td><td>@item.Position</td><td>@item.Type</td><td>@item.State</td></tr>
+    <tr>
+        <td>@item.User</td>
+        <td>@item.Position</td>
+        <td>@item.Type</td>
+        <td>@item.State</td>
+        <td>
+            <select asp-for="@item.EmployeeId" asp-items="ViewBag.Users"></select>
+            <span asp-validation-for="@item.EmployeeId"></span>
+        </td>
+        <td>
+            <form asp-controller="Mission" asp-action="Create" asp-route-id="@item.Id" method="post">
+                <button type="submit" class="btn btn-sm btn-dark">
+                    Назначить пользователя
+                </button>
+            </form>
+        </td>
+    </tr>
         }
     </table>
 }

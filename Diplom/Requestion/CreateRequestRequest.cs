@@ -12,5 +12,6 @@ namespace Diplom.Requestion
         public string PositionId { get; set; }
         public string StateId { get; set; }
         public string TypeId { get; set; }
+
     }
 }

@@ -27,6 +27,7 @@ namespace Diplom.Controllers
         }
         public IActionResult Index()
         {
+            ViewBag.Users = new SelectList(_userManager.Users.ToList(), "Id", "Email");
             return View(GetAll());
         }
         public IActionResult Create()
