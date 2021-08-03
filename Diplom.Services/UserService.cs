@@ -20,7 +20,7 @@ namespace Diplom.Services
         {
             try
             {
-                var states = applicationDbContext.Users.Where(p => Guid.Parse(p.Id) == profession);
+                var states = applicationDbContext.Users.Where(p => p.ProfessionId == profession);
                 IEnumerable<User> dto = states;
                 return dto;
             }
