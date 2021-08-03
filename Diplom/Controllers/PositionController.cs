@@ -24,7 +24,7 @@ namespace Diplom.Controllers
             return View(GetAll());
         }
         [HttpPost]
-        public JsonResult Create(PositionRequest createResponse)
+        public IActionResult Create(PositionRequest createResponse)
         {
             try
             {
@@ -32,7 +32,8 @@ namespace Diplom.Controllers
                 if (!int.TryParse(createResponse.Floor, out int floor)) throw new Exception("The floor is not a int type");
                 if (!int.TryParse(createResponse.CoordX, out int coordX)) throw new Exception("The coord is not a int type");
                 if (!int.TryParse(createResponse.CoordY, out int coordY)) throw new Exception("The coord is not a int type");
-                return new JsonResult(StandardResponse(_positionService.Create(createResponse.Name, floor, coordX, coordY)));//узнать про юзера
+                _positionService.Create(createResponse.Name, floor, coordX, coordY);
+                return View();//узнать про юзера
             }
             catch (Exception ex)
             {

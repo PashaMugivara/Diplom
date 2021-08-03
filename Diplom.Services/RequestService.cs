@@ -14,16 +14,16 @@ namespace Diplom.Services
         {
             this.applicationDbContext = applicationDbContext;
         }
-        public Request Create(User applicationUser, string requestDescription, Guid requestPositionId, Guid requestStateId, Guid requestTypeId, DateTime requestDate)
+        public Request Create(Guid applicationUser, string requestDescription, Guid requestPositionId, Guid requestTypeId, DateTime requestDate)
         {
             try
             {
                 var request = new Request();
                 request.Id = Guid.NewGuid();
-                request.User = applicationUser;
+                request.User = GetUser(applicationUser);//может возникнуть проблема
                 request.Description = requestDescription;
                 request.PositionId = GetPosition(requestPositionId).Id;
-                request.StateId = GetState(requestStateId).Id;
+                request.StateId = GetState().Id;
                 request.TypeId = GetType(requestTypeId).Id;
                 request.Data = requestDate;
                 applicationDbContext.Requests.Add(request);
@@ -50,8 +50,20 @@ namespace Diplom.Services
                 throw new Exception(e.Message);
             }
         }
-
-        private RequestState GetState(Guid id)
+        public RequestState GetState()
+        {
+            try
+            {
+                var state = applicationDbContext.RequestStates.FirstOrDefault(p => p.Name == "New");//try-case
+                if (state == null) throw new Exception("State with this guid does not exist");
+                return state;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public RequestState GetState(Guid id)
         {
             try
             {
@@ -64,7 +76,7 @@ namespace Diplom.Services
                 throw new Exception(e.Message);
             }
         }
-        private RequestPosition GetPosition(Guid id)
+        public RequestPosition GetPosition(Guid id)
         {
             try
             {
@@ -79,9 +91,22 @@ namespace Diplom.Services
 
         }
 
+        public User GetUser(Guid id)
+        {
+            try
+            {
+                var position = applicationDbContext.Users.FirstOrDefault(p => p.Id == id.ToString());
+                if (position == null) throw new Exception("User with this guid does not exist");
+                return position;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
 
+        }
 
-        private RequestType GetType(Guid id)
+        public RequestType GetType(Guid id)
         {
             try
             {

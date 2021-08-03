@@ -10,16 +10,20 @@ using Diplom.Requestion;
 using Diplom.Response;
 using Diplom.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Diplom.Controllers
 {
     public class RequestController : Controller
     {
         private readonly IRequestService _requestService;
+        private readonly UserManager<User> _userManager;
 
-        public RequestController(IRequestService requestService)
+        public RequestController(UserManager<User> userManager, IRequestService requestService)
         {
             _requestService = requestService;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -32,16 +36,17 @@ namespace Diplom.Controllers
             return View();
         }
         [HttpPost]
-        public JsonResult Create(CreateRequestRequest createResponse)
+        public IActionResult Create(CreateRequestRequest createResponse)
         {
             try
             {
-                if (!Guid.TryParse(createResponse.UserId, out Guid user)) throw new Exception("The user is not a Guid type");//не гуидник
-                if (!Guid.TryParse(createResponse.StateId, out Guid state)) throw new Exception("The state is not a Guid type");
+                var userId =_userManager.GetUserId(User);
+                if (!Guid.TryParse(userId, out Guid user)) throw new Exception("The user is not a Guid type");//не гуидник
                 if (!Guid.TryParse(createResponse.TypeId, out Guid type)) throw new Exception("The type is not a Guid type");
                 if (!Guid.TryParse(createResponse.PositionId, out Guid position)) throw new Exception("The position is not a Guid type");
                 if (string.IsNullOrWhiteSpace(createResponse.Description)) createResponse.Description = "";
-                return new JsonResult(RequestToStandardResponse(_requestService.Create(null, createResponse.Description, position, state, type, DateTime.Now)));//узнать про юзера
+                _requestService.Create(user, createResponse.Description, position, type, DateTime.Now);
+                return View();//узнать про юзера
             }
             catch (Exception ex)
             {
@@ -145,11 +150,11 @@ namespace Diplom.Controllers
         {
             var createRequestResponse = new CreateRequestResponse();
             createRequestResponse.Id = request.Id.ToString();
-            createRequestResponse.User = request.User.UserName;
+            createRequestResponse.User = _requestService.GetUser(new Guid(request.UserId)).Email;//для этого нужен Dto класс
             createRequestResponse.Description = request.Description;
-            createRequestResponse.State = request.Position.Name;
-            createRequestResponse.State = request.State.Name;
-            createRequestResponse.Type = request.Type.Name;
+            createRequestResponse.Position = _requestService.GetPosition(request.PositionId).Name;//nлное название места надо
+            createRequestResponse.State = _requestService.GetState(request.StateId).Name;
+            createRequestResponse.Type = _requestService.GetType(request.TypeId).Name;
             createRequestResponse.Date = request.Data.ToString("dd.MM.yyyy");
             return createRequestResponse;
         }
