@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<Diplom.Response.PositionResponse>
 
 <h2>Список позиций</h2>
-    @foreach (var profession in Model)
-    {
         <table class="table">
 
             <tr><td>Название</td><td>Этаж</td><td>Координты</td></tr>
@@ -11,5 +9,4 @@
                 <tr><td>@item.Name</td><td>@item.Floor</td><td>@item.CoordX</td><td>@item.CoordY</td></tr>
             }
         </table>
-    }
-<a asp-action="Create">Добавить роль</a>
+<a asp-action="Create">Добавить позицию</a>

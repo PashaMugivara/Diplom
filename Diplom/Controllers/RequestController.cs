@@ -46,7 +46,7 @@ namespace Diplom.Controllers
                 if (!Guid.TryParse(createResponse.PositionId, out Guid position)) throw new Exception("The position is not a Guid type");
                 if (string.IsNullOrWhiteSpace(createResponse.Description)) createResponse.Description = "";
                 _requestService.Create(user, createResponse.Description, position, type, DateTime.Now);
-                return View();//узнать про юзера
+                return RedirectToAction("Index", "Request");//узнать про юзера
             }
             catch (Exception ex)
             {
