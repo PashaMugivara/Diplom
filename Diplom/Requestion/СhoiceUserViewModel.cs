@@ -12,7 +12,6 @@ namespace Diplom.Requestion
         public CreateRequestResponse CreateRequestResponse { get; set; }
         public string ProfessionId { get; set; }
         public Guid id { get; set; }
-        public string idS { get; set; }
         public List<User> Users { get; set; } = new List<User>();
     }
 }

@@ -25,18 +25,26 @@ namespace Diplom.Controllers
         }
         public IActionResult Index()
         {
-            
             return View();
         }
 
         [HttpPost]
         public IActionResult Index(СhoiceUserViewModel сhoiceUserViewModel)
         {
-            if (сhoiceUserViewModel.idS != null) сhoiceUserViewModel.id = new Guid(сhoiceUserViewModel.idS);
             сhoiceUserViewModel.CreateRequestResponse = RequestToStandardResponse(_requestService.Get(сhoiceUserViewModel.id));
             if (сhoiceUserViewModel.ProfessionId!=null) сhoiceUserViewModel.Users = _userService.GetAll(new Guid(сhoiceUserViewModel.ProfessionId)).ToList();
             ViewBag.Professions = new SelectList(_userService.GetAllProfession(), "Id", "Name");
             return View(сhoiceUserViewModel);
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(CreateMission createMission)
+        {
+            _missionService.Create(createMission.userId, createMission.requestId);
+            return RedirectToAction("Index", "Request");
         }
         private CreateRequestResponse RequestToStandardResponse(Request request)
         {
