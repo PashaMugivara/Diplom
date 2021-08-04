@@ -18,16 +18,18 @@ namespace Diplom.Controllers
     public class RequestController : Controller
     {
         private readonly IRequestService _requestService;
+        private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
 
-        public RequestController(UserManager<User> userManager, IRequestService requestService)
+        public RequestController(UserManager<User> userManager, IRequestService requestService, IUserService userService)
         {
             _requestService = requestService;
             _userManager = userManager;
+            _userService = userService;
         }
         public IActionResult Index()
         {
-            ViewBag.Users = new SelectList(_userManager.Users.ToList(), "Id", "Email");
+
             return View(GetAll());
         }
         public IActionResult Create()

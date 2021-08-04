@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Diplom.Services
 {
-    public class MissionService
+    public class MissionService: IMissionService
     {
         private readonly ApplicationDbContext applicationDbContext;
         public MissionService(ApplicationDbContext applicationDbContext)

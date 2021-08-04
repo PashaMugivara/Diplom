@@ -1,0 +1,45 @@
+﻿@model Diplom.Requestion.СhoiceUserViewModel
+
+@{
+    ViewBag.Title = "Все пользователи";
+}
+<form asp-controller="Mission" asp-action="Index" asp-route-id="@Model.id" method="post">
+    <table class="table">
+
+        <tr><td>Отправитель</td><td>Место запроса</td><td>Тип помощи</td><td>Статус</td></tr>
+        <tr>
+            <td>@Model.CreateRequestResponse.User</td>
+            <td>@Model.CreateRequestResponse.Position</td>
+            <td>@Model.CreateRequestResponse.Type</td>
+            <td>@Model.CreateRequestResponse.State</td>
+        </tr>
+    </table>
+
+    <table class="table">
+        <tr>Выберите профессию</tr>
+        <tr>
+            <td>
+                <select asp-for="@Model.ProfessionId" asp-items="ViewBag.Professions"></select>
+                <span asp-validation-for="@Model.ProfessionId"></span>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-sm btn-dark">
+                    Показать сотрудников
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table">
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-action="Create" asp-route-userid="@user.Id">Права доступа</a>
+                </td>
+            </tr>
+        }
+    </table>
+</form>
+

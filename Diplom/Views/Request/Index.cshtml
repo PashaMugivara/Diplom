@@ -20,11 +20,7 @@
         <td>@item.Type</td>
         <td>@item.State</td>
         <td>
-            <select asp-for="@item.EmployeeId" asp-items="ViewBag.Users"></select>
-            <span asp-validation-for="@item.EmployeeId"></span>
-        </td>
-        <td>
-            <form asp-controller="Mission" asp-action="Create" asp-route-id="@item.Id" method="post">
+            <form asp-controller="Mission" asp-action="Index" asp-route-id="@item.Id" method="post">
                 <button type="submit" class="btn btn-sm btn-dark">
                     Назначить пользователя
                 </button>
