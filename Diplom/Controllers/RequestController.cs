@@ -70,20 +70,23 @@ namespace Diplom.Controllers
             
         }
         [HttpPost]
-        public JsonResult Update([FromBody] UpdateRequestRequest updateRequest)
+        public IActionResult Update(UpdateRequestRequest updateRequest)
         {
             try
             {
                 if(!Guid.TryParse(updateRequest.Id, out Guid requestId)) throw new Exception("The ticketId is not a Guid type");
                 var request = _requestService.Get(requestId);
+                if (_requestService.GetState(request.StateId).Name == "New") updateRequest.NewStateId = _requestService.GetState("In progress").Id.ToString();
+                else if (_requestService.GetState(request.StateId).Name == "In progress") updateRequest.NewStateId = _requestService.GetState("Finished").Id.ToString();
                 if (string.IsNullOrWhiteSpace(updateRequest.NewDescription)) updateRequest.NewDescription = request.Description;
-                if (string.IsNullOrWhiteSpace(updateRequest.NewPositionId)) updateRequest.NewPositionId = request.Position.Id.ToString();
-                if (!Guid.TryParse(updateRequest.NewPositionId, out Guid newPositionId)) throw new Exception("The state is not a Guid type");
-                if (string.IsNullOrWhiteSpace(updateRequest.NewStateId)) updateRequest.NewStateId = request.State.Id.ToString();
+                if (string.IsNullOrWhiteSpace(updateRequest.NewPositionId)) updateRequest.NewPositionId = _requestService.GetPosition(request.PositionId).Id.ToString();
+                if (!Guid.TryParse(updateRequest.NewPositionId, out Guid newPositionId)) throw new Exception("The position is not a Guid type");
+                if (string.IsNullOrWhiteSpace(updateRequest.NewStateId)) updateRequest.NewStateId = _requestService.GetState(request.StateId).Id.ToString();
                 if (!Guid.TryParse(updateRequest.NewStateId, out Guid newStateId)) throw new Exception("The state is not a Guid type");
-                if (string.IsNullOrWhiteSpace(updateRequest.NewTypeId)) updateRequest.NewTypeId = request.Type.Id.ToString();
+                if (string.IsNullOrWhiteSpace(updateRequest.NewTypeId)) updateRequest.NewTypeId = _requestService.GetType(request.TypeId).Id.ToString();
                 if (!Guid.TryParse(updateRequest.NewTypeId, out Guid newTypeId)) throw new Exception("The type is not a Guid type");
-                return new JsonResult(RequestToUpdateResponse(_requestService.Update(requestId, updateRequest.NewDescription, newPositionId, newStateId, newTypeId, DateTime.Now), request));
+                _requestService.Update(requestId, updateRequest.NewDescription, newStateId, newTypeId, newPositionId, request.Data);
+                return RedirectToAction("Index", "Request");
             }
             catch (Exception ex)
             {

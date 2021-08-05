@@ -18,6 +18,7 @@ namespace Diplom.Services
         //IEnumerable<requestDto> GetFiltered(IEnumerable<requestDto> requests, string filter);
         public User GetUser(Guid id);
         public RequestPosition GetPosition(Guid id);
+        public RequestState GetState(string name);
         public RequestState GetState(Guid id);
         public RequestType GetType(Guid id);
         IEnumerable<Request> GetAll();

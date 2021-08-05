@@ -23,7 +23,7 @@ namespace Diplom.Services
                 request.User = GetUser(applicationUser);//может возникнуть проблема
                 request.Description = requestDescription;
                 request.PositionId = GetPosition(requestPositionId).Id;
-                request.StateId = GetState().Id;
+                request.StateId = GetState("New").Id;
                 request.TypeId = GetType(requestTypeId).Id;
                 request.Data = requestDate;
                 applicationDbContext.Requests.Add(request);
@@ -50,11 +50,11 @@ namespace Diplom.Services
                 throw new Exception(e.Message);
             }
         }
-        public RequestState GetState()
+        public RequestState GetState(string name)
         {
             try
             {
-                var state = applicationDbContext.RequestStates.FirstOrDefault(p => p.Name == "New");//try-case
+                var state = applicationDbContext.RequestStates.FirstOrDefault(p => p.Name == name);//try-case
                 if (state == null) throw new Exception("State with this guid does not exist");
                 return state;
             }
@@ -81,7 +81,7 @@ namespace Diplom.Services
             try
             {
                 var position = applicationDbContext.RequestPositions.FirstOrDefault(p => p.Id == id);
-                if (position == null) throw new Exception("State with this guid does not exist");
+                if (position == null) throw new Exception("Position with this guid does not exist");
                 return position;
             }
             catch (Exception e)
@@ -163,10 +163,10 @@ namespace Diplom.Services
                     request.Description = newDescription;
                 if (newStateId != Guid.Empty)
                     request.StateId = GetState(newStateId).Id;
-                if (newStateId != Guid.Empty)
+                if (newTypeId != Guid.Empty)
                     request.TypeId = GetType(newTypeId).Id;
                 if (newPositionId != Guid.Empty)
-                    request.TypeId = GetPosition(newPositionId).Id;
+                    request.PositionId = GetPosition(newPositionId).Id;
                 request.Data = newDate;
 
                 applicationDbContext.SaveChanges();
