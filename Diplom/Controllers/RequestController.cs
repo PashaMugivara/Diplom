@@ -20,17 +20,28 @@ namespace Diplom.Controllers
         private readonly IRequestService _requestService;
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IMissionService _missionService;
 
-        public RequestController(UserManager<User> userManager, IRequestService requestService, IUserService userService)
+        public RequestController(UserManager<User> userManager, IRequestService requestService, IUserService userService, IMissionService missionService, SignInManager<User> signInManager)
         {
             _requestService = requestService;
             _userManager = userManager;
             _userService = userService;
+            _missionService = missionService;
+            _signInManager = signInManager;
         }
         public IActionResult Index()
         {
-
-            return View(GetAll());
+            IEnumerable<CreateRequestResponse> a;
+            if (_signInManager.IsSignedIn(User))
+                a = GetAllResponse(MissionToRequest(_missionService.GetAll(new Guid(_userManager.GetUserId(User)))));
+            else a = GetAll();
+            MissionAndRequestResponse missionAndRequestResponse = new MissionAndRequestResponse() {
+                Requests= GetAll(),
+                Missions = a
+            };
+            return View(missionAndRequestResponse);
         }
         public IActionResult Create()
         {
@@ -179,6 +190,13 @@ namespace Diplom.Controllers
         private IEnumerable<CreateRequestResponse> GetAllResponse(IEnumerable<Request> requests)
         {
             return requests.Select(RequestToStandardResponse);
+        }
+        private IEnumerable<Request> MissionToRequest(IEnumerable<Mission> mission)
+        {
+            foreach (var ir in mission)
+            {
+                yield return _requestService.Get(ir.RequestId);
+            }
         }
     }
 }
