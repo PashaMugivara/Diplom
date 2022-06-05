@@ -23,7 +23,7 @@ namespace Diplom.Services
                 request.User = GetUser(applicationUser);//может возникнуть проблема
                 request.Description = requestDescription;
                 request.PositionId = GetPosition(requestPositionId).Id;
-                request.StateId = GetState("New").Id;
+                request.StateId = GetState("Новый").Id;
                 request.TypeId = GetType(requestTypeId).Id;
                 request.Data = requestDate;
                 applicationDbContext.Requests.Add(request);

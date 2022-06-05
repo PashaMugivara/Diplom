@@ -7,13 +7,14 @@
         <label asp-for="Description" class="control-label">Описание проблемы</label>
         <input type="text" asp-for="Description" class="form-control" />
     </div>
+    <p></p>
     <div>
-        <label asp-for="PositionId"></label>
+        <label asp-for="PositionId">Местоположение</label>
         <select asp-for="PositionId" asp-items="ViewBag.Positions"></select>
         <span asp-validation-for="PositionId"></span>
     </div>
     <div>
-        <label asp-for="TypeId"></label>
+        <label asp-for="TypeId">Тип</label>
         <select asp-for="TypeId" asp-items="ViewBag.Types"></select>
         <span asp-validation-for="TypeId"></span>
     </div>

@@ -13,9 +13,9 @@ namespace Diplom.DataAccess.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("40fef3f4-3c91-412e-8acc-50d9da5a260c"), "New" },
-                    { new Guid("ba3e686e-dccf-43ee-bf8c-96752022401a"), "In progress" },
-                    { new Guid("a455cbb0-2eb7-4853-ac70-a2a745352ce4"), "Finished" }
+                    { new Guid("40fef3f4-3c91-412e-8acc-50d9da5a260c"), "Новый" },
+                    { new Guid("ba3e686e-dccf-43ee-bf8c-96752022401a"), "В процессе" },
+                    { new Guid("a455cbb0-2eb7-4853-ac70-a2a745352ce4"), "Завершен" }
                 });
 
             migrationBuilder.InsertData(
@@ -24,13 +24,13 @@ namespace Diplom.DataAccess.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("6db3c78a-5777-4828-b29d-696217f1a039"), "Other" },
-                    { new Guid("f8467a92-7892-42a6-9a41-1744bffd42b7"), "Need an employee" },
-                    { new Guid("f3137045-f3fe-4f4a-b044-3cd92c6cf93c"), "Cargo transfer" },
-                    { new Guid("2510d9b3-273d-4279-aeab-f3dbaa354300"), "Conflict" },
-                    { new Guid("59733b54-376d-461c-ae90-9dc4bc607451"), "Repair" },
-                    { new Guid("1ca550a7-8991-4cbe-a691-c151e3fe4cc0"), "Cleaning" },
-                    { new Guid("60e328e1-64dd-4798-860d-161eb6aca2a3"), "System failure" }
+                    { new Guid("6db3c78a-5777-4828-b29d-696217f1a039"), "Иное" },
+                    { new Guid("f8467a92-7892-42a6-9a41-1744bffd42b7"), "Требуется присутствие" },
+                    { new Guid("f3137045-f3fe-4f4a-b044-3cd92c6cf93c"), "Перевозка грузов" },
+                    { new Guid("2510d9b3-273d-4279-aeab-f3dbaa354300"), "Конфликт" },
+                    { new Guid("59733b54-376d-461c-ae90-9dc4bc607451"), "Ремонт" },
+                    { new Guid("1ca550a7-8991-4cbe-a691-c151e3fe4cc0"), "Уборка" },
+                    { new Guid("60e328e1-64dd-4798-860d-161eb6aca2a3"), "Системная ошибка" }
                 });
 
             migrationBuilder.InsertData(
@@ -39,20 +39,20 @@ namespace Diplom.DataAccess.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("06052d98-3633-4049-b429-6bd627ae78db"), "Customs officer" },
-                    { new Guid("bf3ed7e3-a7dc-45b3-9a10-133221bf1934"), "Technician" },
-                    { new Guid("8e787257-ad6c-4470-b9bd-ba0bf594cc3c"), "Mechanic" },
-                    { new Guid("27c66a20-9fb2-465f-8e42-15fa20feb2f1"), "Driver" },
-                    { new Guid("e5d59f97-bb27-495a-82f8-7b3eafab992b"), "Loader" },
-                    { new Guid("c15afb2c-0d88-4d0c-983b-a6c6f7baca02"), "Policeman" },
-                    { new Guid("a0452614-81de-4a75-88e0-e87956a2189e"), "Dispatcher" },
-                    { new Guid("339fc2c0-6ecf-48e2-a076-aeab62b30275"), "Stewardess" },
-                    { new Guid("516fe2cb-14cc-4273-8457-ca822f1cafa0"), "Pilot" },
-                    { new Guid("c904ad13-ed03-430e-ae6b-05efd6c0bc31"), "Security" },
-                    { new Guid("f11c0c83-5a91-44a6-af03-ea3222919ef5"), "Engineer" },
-                    { new Guid("ad90bcfc-0e5a-4bb3-b013-f08e801a1933"), "Plumber" },
-                    { new Guid("90aceb66-9981-4e71-a886-9a84170dc047"), "Сleaning lady" },
-                    { new Guid("ecc35211-08d9-43bc-8f5d-44a8d246a773"), "Cashier" }
+                    { new Guid("06052d98-3633-4049-b429-6bd627ae78db"), "Таможенник" },
+                    { new Guid("bf3ed7e3-a7dc-45b3-9a10-133221bf1934"), "Техник" },
+                    { new Guid("8e787257-ad6c-4470-b9bd-ba0bf594cc3c"), "Механик" },
+                    { new Guid("27c66a20-9fb2-465f-8e42-15fa20feb2f1"), "Водитель" },
+                    { new Guid("e5d59f97-bb27-495a-82f8-7b3eafab992b"), "Грузчик" },
+                    { new Guid("c15afb2c-0d88-4d0c-983b-a6c6f7baca02"), "Полицейский" },
+                    { new Guid("a0452614-81de-4a75-88e0-e87956a2189e"), "Диспетчер" },
+                    { new Guid("339fc2c0-6ecf-48e2-a076-aeab62b30275"), "Стюардесса" },
+                    { new Guid("516fe2cb-14cc-4273-8457-ca822f1cafa0"), "Пилот" },
+                    { new Guid("c904ad13-ed03-430e-ae6b-05efd6c0bc31"), "Охранник" },
+                    { new Guid("f11c0c83-5a91-44a6-af03-ea3222919ef5"), "Инженер" },
+                    { new Guid("ad90bcfc-0e5a-4bb3-b013-f08e801a1933"), "Сантехник" },
+                    { new Guid("90aceb66-9981-4e71-a886-9a84170dc047"), "Уборщица" },
+                    { new Guid("ecc35211-08d9-43bc-8f5d-44a8d246a773"), "Кассир" }
                 });
 
             migrationBuilder.InsertData(

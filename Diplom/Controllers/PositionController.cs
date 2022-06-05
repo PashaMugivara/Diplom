@@ -32,7 +32,7 @@ namespace Diplom.Controllers
                 if (!int.TryParse(createResponse.Floor, out int floor)) throw new Exception("The floor is not a int type");
                 if (!int.TryParse(createResponse.CoordX, out int coordX)) throw new Exception("The coord is not a int type");
                 if (!int.TryParse(createResponse.CoordY, out int coordY)) throw new Exception("The coord is not a int type");
-                _positionService.Create(createResponse.Name, floor, coordX, coordY);
+                _positionService.Create(createResponse.Name + " Этаж " + floor + " Координаты " + coordX + " " + coordY, floor, coordX, coordY);
                 return RedirectToAction("Index", "Position");//узнать про юзера
             }
             catch (Exception ex)

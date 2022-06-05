@@ -38,8 +38,8 @@ namespace Diplom.Controllers
                 a = GetAllResponse(MissionToRequest(_missionService.GetAll(new Guid(_userManager.GetUserId(User)))));
             else a = GetAll();
             MissionAndRequestResponse missionAndRequestResponse = new MissionAndRequestResponse() {
-                Requests= GetAll(),
-                Missions = a
+                Requests= GetAll().OrderByDescending(x => x.State),
+                Missions = a.OrderByDescending(x => x.State)
             };
             return View(missionAndRequestResponse);
         }
@@ -76,8 +76,8 @@ namespace Diplom.Controllers
             {
                 if(!Guid.TryParse(updateRequest.Id, out Guid requestId)) throw new Exception("The ticketId is not a Guid type");
                 var request = _requestService.Get(requestId);
-                if (_requestService.GetState(request.StateId).Name == "New") updateRequest.NewStateId = _requestService.GetState("In progress").Id.ToString();
-                else if (_requestService.GetState(request.StateId).Name == "In progress") updateRequest.NewStateId = _requestService.GetState("Finished").Id.ToString();
+                if (_requestService.GetState(request.StateId).Name == "Новый") updateRequest.NewStateId = _requestService.GetState("В процессе").Id.ToString();
+                else if (_requestService.GetState(request.StateId).Name == "В процессе") updateRequest.NewStateId = _requestService.GetState("Завершен").Id.ToString();
                 if (string.IsNullOrWhiteSpace(updateRequest.NewDescription)) updateRequest.NewDescription = request.Description;
                 if (string.IsNullOrWhiteSpace(updateRequest.NewPositionId)) updateRequest.NewPositionId = _requestService.GetPosition(request.PositionId).Id.ToString();
                 if (!Guid.TryParse(updateRequest.NewPositionId, out Guid newPositionId)) throw new Exception("The position is not a Guid type");
